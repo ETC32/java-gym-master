@@ -81,7 +81,7 @@ public class Timetable {
       result.add(new CounterOfTrainings(entry.getValue(), entry.getKey()));
     }
 
-    result.sort((a, b) -> b.trainingCount - a.trainingCount);
+    result.sort((a, b) -> b.getTrainingCount() - a.getTrainingCount());
 
     return result;
   }
