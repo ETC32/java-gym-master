@@ -2,8 +2,8 @@ package ru.yandex.practicum.gym;
 
 public class CounterOfTrainings {
 
-  Coach coach;
-  int trainingCount;
+  private final Coach coach;
+  private final int trainingCount;
 
   public CounterOfTrainings(int trainingCount, Coach coach) {
     this.trainingCount = trainingCount;
@@ -24,5 +24,13 @@ public class CounterOfTrainings {
   public String toString() {
     return coach.getSurname() + " " + coach.getName() + " " + coach.getMiddleName()
         + " - " + trainingCount + " тренировок";
+  }
+
+  public int getTrainingCount() {
+    return trainingCount;
+  }
+
+  public Coach getCoach() {
+    return coach;
   }
 }
