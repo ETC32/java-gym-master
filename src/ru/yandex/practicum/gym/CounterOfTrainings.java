@@ -2,12 +2,20 @@ package ru.yandex.practicum.gym;
 
 public class CounterOfTrainings {
 
-  Coach coach;
-  int trainingCount;
+  private final Coach coach;
+  private final int trainingCount;
 
   public CounterOfTrainings(int trainingCount, Coach coach) {
     this.trainingCount = trainingCount;
     this.coach = coach;
+  }
+
+  public int getTrainingCount() {
+    return trainingCount;
+  }
+
+  public Coach getCoach() {
+    return coach;
   }
 
   @Override
