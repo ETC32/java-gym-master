@@ -1,7 +1,6 @@
 package ru.yandex.practicum.gym;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -170,8 +169,8 @@ public class TimetableTest {
 
     List<CounterOfTrainings> result = timetable.getCountByCoaches();
     assertEquals(1, result.size());
-    assertEquals(3, result.getFirst().getTrainingCount());
-    assertEquals(coachOne, result.getFirst().getCoach());
+    assertEquals(3, result.get(0).trainingCount);
+    assertEquals(coachOne, result.get(0).coach);
   }
 
   @Test
@@ -193,11 +192,11 @@ public class TimetableTest {
     List<CounterOfTrainings> result = timetable.getCountByCoaches();
     assertEquals(2, result.size());
 
-    assertEquals(coachTwo, result.get(0).getCoach());
-    assertEquals(4, result.get(0).getTrainingCount());
+    assertEquals(coachTwo, result.get(0).coach);
+    assertEquals(4, result.get(0).trainingCount);
 
-    assertEquals(coachOne, result.get(1).getCoach());
-    assertEquals(2, result.get(1).getTrainingCount());
+    assertEquals(coachOne, result.get(1).coach);
+    assertEquals(2, result.get(1).trainingCount);
   }
 
 }
