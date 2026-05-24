@@ -1,44 +1,47 @@
 package ru.yandex.practicum.gym;
 
-import java.util.Objects;
-
 public class Coach {
 
-    //фамилия
-    private String surname;
-    //имя
-    private String name;
-    //отчество
-    private String middleName;
+  private final String surname;
+  private final String name;
+  private final String middleName;
 
-    public Coach(String surname, String name, String middleName) {
-        this.surname = surname;
-        this.name = name;
-        this.middleName = middleName;
-    }
+  public Coach(String surname, String name, String middleName) {
+    this.surname = surname;
+    this.name = name;
+    this.middleName = middleName;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Coach coach = (Coach) o;
-        return Objects.equals(surname, coach.surname) && Objects.equals(name, coach.name) && Objects.equals(middleName, coach.middleName);
-    }
+  public String getSurname() {
+    return surname;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(surname, name, middleName);
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getSurname() {
-        return surname;
-    }
+  public String getMiddleName() {
+    return middleName;
+  }
 
-    public String getName() {
-        return name;
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Coach coach = (Coach) obj;
+    return surname.equals(coach.surname) && name.equals(coach.name) && middleName.equals(
+        coach.middleName);
+  }
 
-    public String getMiddleName() {
-        return middleName;
-    }
+  @Override
+  public int hashCode() {
+    int result = surname.hashCode();
+    result = 31 * result + name.hashCode();
+    result = 31 * result + middleName.hashCode();
+    return result;
+  }
 }

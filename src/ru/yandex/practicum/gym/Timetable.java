@@ -1,20 +1,89 @@
 package ru.yandex.practicum.gym;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Timetable {
 
-    private /* как это хранить??? */ timetable;
+  private final Map<String, TreeMap<TimeOfDay, ArrayList<TrainingSession>>> timetable = new HashMap<>();
 
-    public void addNewTrainingSession(TrainingSession trainingSession) {
-        //сохраняем занятие в расписании
+  public void addNewTrainingSession(TrainingSession trainingSession) {
+
+    String dayName = trainingSession.getDayOfWeek().name();
+    TreeMap<TimeOfDay, ArrayList<TrainingSession>> trainingDay;
+    ArrayList<TrainingSession> trainingSessions;
+
+    if (timetable.containsKey(dayName)) {
+      trainingDay = timetable.get(dayName);
+    } else {
+      trainingDay = new TreeMap<>();
     }
 
-    public /* непонятно, что возвращать */ getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
-        //как реализовать, тоже непонятно, но сложность должна быть О(1)
+    if (trainingDay.containsKey(trainingSession.getTimeOfDay())) {
+      trainingSessions = trainingDay.get(trainingSession.getTimeOfDay());
+    } else {
+      trainingSessions = new ArrayList<>();
     }
 
-    public /* непонятно, что возвращать */ getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
-        //как реализовать, тоже непонятно, но сложность должна быть О(1)
+    trainingSessions.add(trainingSession);
+    trainingDay.put(trainingSession.getTimeOfDay(), trainingSessions);
+    timetable.put(dayName, trainingDay);
+  }
+
+  public ArrayList<TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
+
+    TreeMap<TimeOfDay, ArrayList<TrainingSession>> daySchedule = timetable.get(dayOfWeek.name());
+    if (daySchedule == null) {
+      return new ArrayList<>();
     }
+
+    ArrayList<TrainingSession> result = new ArrayList<>();
+    for (ArrayList<TrainingSession> sessions : daySchedule.values()) {
+      result.addAll(sessions);
+    }
+    return result;
+  }
+
+
+  public ArrayList<TrainingSession> getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek,
+      TimeOfDay timeOfDay) {
+
+    TreeMap<TimeOfDay, ArrayList<TrainingSession>> daySchedule = timetable.get(dayOfWeek.name());
+
+    if (daySchedule == null || !daySchedule.containsKey(timeOfDay)) {
+      return new ArrayList<>();
+    }
+
+    return daySchedule.get(timeOfDay);
+  }
+
+  public List<CounterOfTrainings> getCountByCoaches() {
+    Map<Coach, Integer> coachCountMap = new HashMap<>();
+
+    for (TreeMap<TimeOfDay, ArrayList<TrainingSession>> daySchedule : timetable.values()) {
+      for (ArrayList<TrainingSession> sessions : daySchedule.values()) {
+        for (TrainingSession session : sessions) {
+          Coach coach = session.getCoach();
+          if (coachCountMap.containsKey(coach)) {
+            coachCountMap.put(coach, coachCountMap.get(coach) + 1);
+          } else {
+            coachCountMap.put(coach, 1);
+          }
+        }
+      }
+    }
+
+    List<CounterOfTrainings> result = new ArrayList<>();
+    for (Map.Entry<Coach, Integer> entry : coachCountMap.entrySet()) {
+      result.add(new CounterOfTrainings(entry.getValue(), entry.getKey()));
+    }
+
+    result.sort((a, b) -> b.getTrainingCount() - a.getTrainingCount());
+
+    return result;
+  }
+
 }
